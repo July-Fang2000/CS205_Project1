@@ -1,4 +1,6 @@
-# def uniform_cost_search():
+def uniform_cost_search():
+    cost = 0
+    return cost
 
 
 def a_star_with_misplaced_tile_heuristic(current_puzzle, goal_puzzle):
