@@ -84,6 +84,9 @@ def search(original_puzzle, goal_puzzle, solve_method):
             print("Running time: " + str(time.time() - start) + "seconds")
             return "Solve this puzzle"
 
+        print("The best state to expand with a g(n) = " + str(q.g) + " and h(n) = "
+              + str(q.h) + " is...\n" + str(q.puzzle) + "\n")
+
         # expand and get its four neighbors of the node
         new_puzzle = generate_puzzle(q, old_puzzle)
 
