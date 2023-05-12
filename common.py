@@ -24,3 +24,5 @@ class Node:
         self.row = row
         self.col = col
 
+    def __lt__(self, other):
+        return self.g + self.h < other.g + other.h
