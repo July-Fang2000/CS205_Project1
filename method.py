@@ -1,3 +1,4 @@
+import copy
 import heapq
 
 from common import *
@@ -64,24 +65,37 @@ def search(original_puzzle, goal_puzzle, solve_method):
             return
 
         # expand and get its four neighbors of the node
-        new_puzzle, pre = generate_puzzle(q, old_puzzle)
+        new_puzzle = generate_puzzle(q, old_puzzle)
 
         # update the g and h of each algorithm
-        for i in pre:
-            if i is not None:
-                if solve_method == 1:
-                    i.g = q.g + 1
-                elif solve_method == 2:
-                    i.g = q.g + 1
-                    i.h = a_star_with_misplaced_tile_heuristic(i.puzzle, goal_puzzle)
-                elif solve_method == 3:
-                    i.g = q.g + 1
-                    i.h = a_star_with_manhattan_distance_heuristic(i.puzzle, goal_puzzle)
-                if i.puzzle not in old_puzzle:
-                    heapq.heappush(queue, i)
-                    old_puzzle.append(i.puzzle)
+        for i in new_puzzle:
+            if solve_method == 1:
+                i.g = q.g + 1
+            elif solve_method == 2:
+                i.g = q.g + 1
+                i.h = a_star_with_misplaced_tile_heuristic(i.puzzle, goal_puzzle)
+            elif solve_method == 3:
+                i.g = q.g + 1
+                i.h = a_star_with_manhattan_distance_heuristic(i.puzzle, goal_puzzle)
+            if i.puzzle not in old_puzzle:
+                heapq.heappush(queue, i)
+                old_puzzle.append(i.puzzle)
 
 
 def generate_puzzle(current_puzzle, old_puzzle):
-    arr = []
-    return current_puzzle, arr
+    move_puzzle = []
+    row, col = current_puzzle.row, current_puzzle.col
+    direction = [1, 0, -1, 0, 1]
+    for i in range(0, 4):
+        current = copy.deepcopy(current_puzzle.puzzle)
+        temp = current[row][col]
+        r = row + direction[i]
+        c = col + direction[i + 1]
+        if r < 0 or r > len(current) - 1 or c < 0 or c > len(current) - 1:
+            continue
+        current[row][col] = current[r][c]
+        current[r][c] = temp
+        if current is not None and current not in old_puzzle:
+            nodes = Node(current, r, c)
+            move_puzzle.append(nodes)
+    return move_puzzle
