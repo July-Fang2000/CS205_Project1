@@ -1,5 +1,6 @@
 import copy
 import heapq
+import time
 
 from common import *
 
@@ -22,16 +23,25 @@ def a_star_with_misplaced_tile_heuristic(original_puzzle, goal_puzzle):
 def a_star_with_manhattan_distance_heuristic(original_puzzle, goal_puzzle):
     distance = 0
     size = len(original_puzzle)
+    goal_dict = {}
+
+    for i in range(size):
+        for j in range(size):
+            goal_dict[goal_puzzle[i][j]] = (i, j)
+
     for i in range(size):
         for j in range(size):
             value = original_puzzle[i][j]
             if value != 0:
-                row_goal, col_goal = divmod(goal_puzzle.index(value), size)
+                row_goal, col_goal = goal_dict[value]
                 distance += abs(row_goal - i) + abs(col_goal - j)
+
     return distance
 
 
 def search(original_puzzle, goal_puzzle, solve_method):
+    start = time.time()
+
     # find the blank position in original_puzzle
     blank_col, blank_row = 0, 0
     for i in range(len(original_puzzle)):
@@ -62,7 +72,8 @@ def search(original_puzzle, goal_puzzle, solve_method):
 
         # if it gets the goal, end the loop
         if q.puzzle == goal_puzzle:
-            return
+            print("Running time: " + str(time.time() - start) + "seconds")
+            return "Solve this puzzle"
 
         # expand and get its four neighbors of the node
         new_puzzle = generate_puzzle(q, old_puzzle)
