@@ -1,3 +1,6 @@
+from common import *
+
+
 def uniform_cost_search():
     cost = 0
     return cost
@@ -24,4 +27,12 @@ def a_star_with_manhattan_distance_heuristic(current_puzzle, goal_puzzle):
                 distance += abs(row_goal - i) + abs(col_goal - j)
     return distance
 
+
 def search(original_puzzle, goal_puzzle, method):
+    # find the blank position in original_puzzle
+    blank_col, blank_row = 0, 0
+    for i in range(len(original_puzzle)):
+        for j in range(len(original_puzzle)):
+            if original_puzzle[i][j] == 0:
+                blank_row, blank_col = i, j
+    print(blank_row, blank_col)
