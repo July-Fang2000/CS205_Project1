@@ -1,17 +1,27 @@
 from math import sqrt
-
 from common import *
 from method import *
 
-goal_puzzle = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
+size = int(sqrt(int(input("Please input the number of X-puzzle:\n "
+                          "(e.g. if you want to solve the 8-puzzle, you need to enter 8) \n"))+1))
 
-size = int(sqrt(int(input("input the puzzle size: \n"))+1))
-print(size)
 puzzle = Puzzle(size)
 
+print("input the value of puzzle, use zero to represent the blank: ")
 for i in range(size):
     for j in range(size):
-        puzzle.set_val(i, j, value=int(input("input the value of row {} and column {}: \n".format(i, j))))
+        puzzle.set_val(i, j, value=int(input("row {} and column {}: \n".format(i, j))))
 
-blank_row, blank_col = puzzle.find_blank()
-print(blank_row, blank_col)
+original_puzzle = puzzle.to_array()
+
+goal_puzzle = [[0] * puzzle.size for _ in range(puzzle.size)]
+count = 1
+for i in range(size):
+    for j in range(size):
+        goal_puzzle[i][j] = count
+        count += 1
+goal_puzzle[size-1][size-1] = 0
+
+
+
+
