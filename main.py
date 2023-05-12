@@ -29,7 +29,6 @@ goal_puzzle[size-1][size-1] = 0
 # original_puzzle = [[1, 6, 7], [5, 0, 3], [4, 8, 2]]  # Depth 16
 # original_puzzle = [[7, 1, 2], [4, 8, 5], [6, 3, 0]]  # Depth 20
 # original_puzzle = [[0, 7, 2], [4, 6, 1], [3, 5, 8]]  # Depth 24
-
 # goal_puzzle = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
 
 # select the method to solve the problem
