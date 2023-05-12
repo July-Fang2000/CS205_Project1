@@ -23,3 +23,5 @@ def a_star_with_manhattan_distance_heuristic(current_puzzle, goal_puzzle):
                 row_goal, col_goal = divmod(goal_puzzle.index(value), size)
                 distance += abs(row_goal - i) + abs(col_goal - j)
     return distance
+
+def search(original_puzzle, goal_puzzle, method):
