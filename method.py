@@ -1,5 +1,6 @@
 import copy
 import heapq
+import sys
 import time
 
 from common import *
@@ -53,25 +54,33 @@ def search(original_puzzle, goal_puzzle, solve_method):
 
     # use the method to get h value come from heuristic algorithm
     if solve_method == 1:
-        current_puzzle.hcost = uniform_cost_search()
+        current_puzzle.h = uniform_cost_search()
     elif solve_method == 2:
-        current_puzzle.hcost = a_star_with_misplaced_tile_heuristic(original_puzzle, goal_puzzle)
+        current_puzzle.h = a_star_with_misplaced_tile_heuristic(original_puzzle, goal_puzzle)
     elif solve_method == 3:
-        current_puzzle.hcost = a_star_with_manhattan_distance_heuristic(original_puzzle, goal_puzzle)
+        current_puzzle.h = a_star_with_manhattan_distance_heuristic(original_puzzle, goal_puzzle)
 
     queue = [current_puzzle]
     old_puzzle = [original_puzzle]
+    count = -1
+    max_queue = 0
+    tol = 200
 
     while True:
         # if no more nodes can test, this puzzle problem can't solve.
         if len(queue) == 0:
-            return "Can't solve this puzzle!"
+            print("Can't solve this puzzle!")
+            return 0
 
         # get and pop the first puzzle in the heap queue
         q = heapq.heappop(queue)
+        count += 1
 
         # if it gets the goal, end the loop
         if q.puzzle == goal_puzzle:
+            print("Depth was: " + str(q.g))
+            print("Node expand number: " + str(count))
+            print("max queue size: " + str(max_queue))
             print("Running time: " + str(time.time() - start) + "seconds")
             return "Solve this puzzle"
 
@@ -82,6 +91,7 @@ def search(original_puzzle, goal_puzzle, solve_method):
         for i in new_puzzle:
             if solve_method == 1:
                 i.g = q.g + 1
+                i.h = uniform_cost_search()
             elif solve_method == 2:
                 i.g = q.g + 1
                 i.h = a_star_with_misplaced_tile_heuristic(i.puzzle, goal_puzzle)
@@ -91,6 +101,13 @@ def search(original_puzzle, goal_puzzle, solve_method):
             if i.puzzle not in old_puzzle:
                 heapq.heappush(queue, i)
                 old_puzzle.append(i.puzzle)
+
+        if len(queue) > max_queue:
+            max_queue = len(queue)
+
+        if time.time() > start + tol:
+            print('Time Limit Exceeded')
+            sys.exit()
 
 
 def generate_puzzle(current_puzzle, old_puzzle):
